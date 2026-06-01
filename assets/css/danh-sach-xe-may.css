@@ -1,0 +1,48 @@
+﻿.page-section {
+  padding-bottom: 1rem;
+}
+
+.table-responsive {
+  border-radius: 1.2rem;
+  overflow: hidden;
+  border: 1px solid rgba(13, 110, 253, 0.08);
+  background: #fff;
+}
+
+.bike-table th,
+.bike-table td {
+  vertical-align: middle;
+}
+
+.bike-table img {
+  width: 100px;
+  border-radius: 0.75rem;
+}
+
+.filter-panel {
+  background: #fff;
+  padding: 1.4rem;
+  border-radius: 1.2rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.filter-panel .form-range {
+  margin-top: 0.5rem;
+}
+
+.card-summary {
+  background: #fff;
+  border-radius: 1.2rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  padding: 1.3rem;
+}
+
+.table-actions .btn {
+  margin-right: 0.5rem;
+}
+
+@media (max-width: 991px) {
+  .bike-table img {
+    width: 70px;
+  }
+}

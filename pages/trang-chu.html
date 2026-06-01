@@ -1,0 +1,204 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hệ Thống Quản Lý Và Buôn Bán Xe Máy</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-MV4QcJtYgKnKJqcPbUDDYliWt7uaP0qV0clVHkTn2VQ0U7WJ2UP4F6oa4YdYcScKLiUE8NQ1nG1RRXpvsk6j0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/trang-chu.css" />
+</head>
+<body>
+  <div id="toast-container" class="toast-container position-fixed top-0 end-0 p-3"></div>
+
+  <header class="site-header sticky-top">
+    <div class="container py-3 d-flex align-items-center justify-content-between">
+      <a class="site-brand text-dark" href="trang-chu.html">
+        <i class="fas fa-motorcycle me-2"></i>MotorBike System
+      </a>
+      <nav class="site-nav d-none d-md-flex align-items-center gap-4">
+        <a class="nav-link active" href="trang-chu.html">Trang Chủ</a>
+        <a class="nav-link" href="danh-sach-xe-may.html">Danh Sách Xe</a>
+        <a class="nav-link" href="danh-sach-phu-tung.html">Phụ Tùng</a>
+        <a class="nav-link" href="hoa-don.html">Hóa Đơn</a>
+      </nav>
+      <a class="btn btn-brand d-none d-md-inline-flex align-items-center" href="danh-sach-xe-may.html">
+        <i class="fas fa-list me-2"></i>Khám Phá
+      </a>
+    </div>
+  </header>
+
+  <main class="container py-5">
+    <section class="home-search-top mb-5 scroll-fade">
+      <div class="card shadow-sm p-4">
+        <div class="row align-items-center gy-3">
+          <div class="col-lg-8">
+            <h5 class="mb-2">Tìm kiếm nhanh</h5>
+            <p class="text-muted mb-3">Nhập tên xe hoặc hãng và tìm ngay mẫu xe ưa thích.</p>
+            <div class="input-group mb-3">
+              <span class="input-group-text"><i class="fas fa-search"></i></span>
+              <input id="hero-search" type="text" class="form-control" placeholder="Tìm kiếm xe, hãng, loại..." />
+            </div>
+            <div class="mb-3">
+              <span class="me-2 fs-6">Nhãn hiệu</span>
+              <button class="btn btn-sm category-pill active" data-brand="Honda" style="color: #733af8; ;">Honda</button>
+              <button class="btn btn-sm category-pill" data-brand="Yamaha" style="color: #733af8; ;">Yamaha</button>
+              <button class="btn btn-sm category-pill" data-brand="Suzuki" style="color: #733af8; ;">Suzuki</button>
+              <button class="btn btn-sm category-pill" data-brand="Piaggio" style="color: #733af8; ;">Piaggio</button>
+              <button class="btn btn-sm category-pill" data-brand="SYM" style="color: #733af8; ;">SYM</button>
+            </div>
+   
+          </div>
+          <div class="col-lg-4 text-lg-end">
+            <span class="d-block text-muted mb-2">Khám phá ngay bộ sưu tập xe mới</span>
+            <a class="btn btn-brand btn-sm" href="danh-sach-xe-may.html"><i class="fas fa-compass me-2"></i>Khám Phá</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero-carousel mb-5 scroll-fade">
+      <div id="heroCarousel" class="carousel slide rounded-4 overflow-hidden shadow-sm" data-bs-ride="carousel" data-bs-interval="5000">
+        <div class="carousel-inner">
+          <div class="carousel-item active hero-slide" style="background-image: url('https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1400&q=80');">
+            <div class="hero-slide-mask"></div>
+            <div class="carousel-caption d-flex flex-column justify-content-center h-100 text-start px-4 px-md-5">
+              <span class="badge hero-badge mb-3">Ưu đãi đặc biệt</span>
+              <h1 class="page-title fw-bold">Xe máy chất lượng - Giá tốt mỗi ngày</h1>
+              <p class="lead my-4">Khám phá các mẫu xe hot nhất, mua trực tuyến và nhận báo giá ngay lập tức.</p>
+              <div class="d-flex flex-wrap gap-3">
+                <a class="btn btn-brand btn-lg" href="danh-sach-xe-may.html"><i class="fas fa-shopping-cart me-2"></i>Mua ngay</a>
+                <a class="btn btn-outline-brand btn-lg" href="hoa-don.html"><i class="fas fa-file-invoice-dollar me-2"></i>Yêu cầu báo giá</a>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item hero-slide" style="background-image: url('https://images.unsplash.com/photo-1498550744929-7e050c21d580?auto=format&fit=crop&w=1400&q=80');">
+            <div class="hero-slide-mask"></div>
+            <div class="carousel-caption d-flex flex-column justify-content-center h-100 text-start px-4 px-md-5">
+              <span class="badge hero-badge mb-3">Dòng xe tay ga</span>
+              <h1 class="page-title fw-bold">Lãng mạn, tiện nghi, sành điệu</h1>
+              <p class="lead my-4">Trải nghiệm cảm giác lái êm ái với các mẫu tay ga hiện đại.</p>
+              <div class="d-flex flex-wrap gap-3">
+                <a class="btn btn-brand btn-lg" href="danh-sach-xe-may.html"><i class="fas fa-motorcycle me-2"></i>Xem ngay</a>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item hero-slide" style="background-image: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1400&q=80');">
+            <div class="hero-slide-mask"></div>
+            <div class="carousel-caption d-flex flex-column justify-content-center h-100 text-start px-4 px-md-5">
+              <span class="badge hero-badge mb-3">Phụ tùng & dịch vụ</span>
+              <h1 class="page-title fw-bold">Phụ tùng chính hãng, bảo hành an tâm</h1>
+              <p class="lead my-4">Từ ắc quy tới phụ kiện, tìm mọi thứ bạn cần cho xe máy.</p>
+              <div class="d-flex flex-wrap gap-3">
+                <a class="btn btn-brand btn-lg" href="danh-sach-phu-tung.html"><i class="fas fa-tools me-2"></i>Khám phá phụ tùng</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="mb-5 scroll-fade">
+      <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+          <h2 class="section-title">Xe bán chạy & mới nhất</h2>
+          <p class="text-muted mb-0">Xem danh sách xe máy bán chạy, xe mới nhập và xe nổi bật trong showroom.</p>
+        </div>
+        <a href="danh-sach-xe-may.html" class="btn btn-outline-brand">Xem tất cả xe</a>
+      </div>
+      <div id="featured-bikes" class="row g-4 home-cards"></div>
+    </section>
+
+    <section class="mb-5 scroll-fade stats-banner">
+      <h2 class="section-title">Thống kê hệ thống</h2>
+      <div class="stats-grid">
+        <div class="stats-card">
+          <div>
+            <div class="stat-label">Tổng số xe</div>
+            <div id="total-bikes" class="stat-value">0</div>
+          </div>
+          <i class="fas fa-motorcycle fa-2x"></i>
+        </div>
+        <div class="stats-card">
+          <div>
+            <div class="stat-label">Tổng số phụ tùng</div>
+            <div id="total-parts" class="stat-value">0</div>
+          </div>
+          <i class="fas fa-screwdriver-wrench fa-2x"></i>
+        </div>
+        <div class="stats-card">
+          <div>
+            <div class="stat-label">Tổng đơn hàng</div>
+            <div id="total-invoices" class="stat-value">0</div>
+          </div>
+          <i class="fas fa-file-invoice fa-2x"></i>
+        </div>
+        <div class="stats-card">
+          <div>
+            <div class="stat-label">Tổng doanh thu</div>
+            <div id="total-revenue" class="stat-value">0 ₫</div>
+          </div>
+          <i class="fas fa-dollar-sign fa-2x"></i>
+        </div>
+      </div>
+    </section>
+
+    <section class="mb-5 scroll-fade">
+      <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+          <h2 class="section-title">Xe nổi bật</h2>
+          <p class="text-muted mb-0">Những mẫu xe được đánh giá cao và bán chạy hiện nay.</p>
+        </div>
+        <a href="danh-sach-phu-tung.html" class="btn btn-outline-brand">Khám phá phụ tùng</a>
+      </div>
+      <div id="popular-bikes" class="row g-4"></div>
+    </section>
+
+    <section class="footer-card py-4 footer-contact scroll-fade rounded-4">
+      <div class="row">
+        <div class="col-md-4">
+          <h5 class="fw-bold">Địa chỉ cửa hàng</h5>
+          <p>123 Nguyễn Trãi, Quận 1, TP. Hồ Chí Minh</p>
+        </div>
+        <div class="col-md-4">
+          <h5 class="fw-bold">Liên hệ nhanh</h5>
+          <p>Hotline: 0909 123 456</p>
+          <p>Email: contact@thegioxemay.vn</p>
+        </div>
+        <div class="col-md-4">
+          <h5 class="fw-bold">Mạng xã hội</h5>
+          <p><i class="fab fa-facebook me-2"></i>facebook.com/thegioxemay</p>
+          <p><i class="fab fa-instagram me-2"></i>instagram.com/thegioxemay</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="py-5">
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-md-6">
+          <p class="footer-brand mb-2">The Gioi Xe May</p>
+          <p class="text-muted">Giải pháp quản lý showroom xe máy tích hợp chức năng bán hàng, quản lý phụ tùng và hóa đơn trực quan.</p>
+        </div>
+        <div class="col-md-6 d-flex align-items-center justify-content-md-end">
+          <small>© 2026 Hệ Thống Quản Lý Và Buôn Bán Xe Máy</small>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/app.js"></script>
+  <script src="../assets/js/trang-chu.js"></script>
+</body>
+</html>

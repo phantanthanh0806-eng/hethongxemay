@@ -1,0 +1,82 @@
+﻿.invoice-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.invoice-panel {
+  background: #fff;
+  border-radius: 1.6rem;
+  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+  padding: 2rem;
+}
+
+.invoice-meta .meta-row,
+.summary-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 0.75rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.invoice-meta .meta-row:last-child,
+.summary-row:last-child {
+  border-bottom: none;
+}
+
+.product-table th,
+.product-table td,
+.history-table th,
+.history-table td {
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  padding: 0.85rem;
+}
+
+.product-table th {
+  background: rgba(13, 110, 253, 0.08);
+}
+
+.action-buttons .btn {
+  min-width: 120px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.total-box {
+  border-radius: 1.2rem;
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.total-box .total-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 0;
+}
+
+.total-box .total-row.grand {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.history-panel {
+  background: #fff;
+  border-radius: 1.2rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.history-table th {
+  white-space: nowrap;
+}
+
+@media (max-width: 767px) {
+  .invoice-meta .meta-row,
+  .summary-row {
+    grid-template-columns: 1fr;
+  }
+}
