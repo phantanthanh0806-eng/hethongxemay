@@ -1,0 +1,26 @@
+/* ==========================================================================
+   CSS DÀNH RIÊNG CHO TRANG PHỤ TÙNG
+   Dùng chung phần lớn với danh-sach-xe.css, thêm một vài custom riêng
+   ========================================================================== */
+
+/* Thêm nút vào giỏ hàng ngay trên bảng phụ tùng */
+.btn-add-cart {
+  color: #28a745;
+  background-color: rgba(40, 167, 69, 0.1);
+  transition: var(--transition);
+}
+
+.btn-add-cart:hover {
+  background-color: #28a745;
+  color: white;
+}
+
+/* Badge Tồn Kho Cảnh Báo */
+.stock-warning {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+.stock-ok {
+  color: #212529;
+}

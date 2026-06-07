@@ -1,0 +1,94 @@
+/* ==========================================================================
+   CSS DÀNH RIÊNG CHO TRANG HÓA ĐƠN VÀ IN ẤN
+   ========================================================================== */
+
+/* Cards and Pills */
+.custom-pills .nav-link {
+  color: var(--secondary-color);
+  border-radius: 0;
+  border-bottom: 2px solid transparent;
+  font-weight: 600;
+}
+
+.custom-pills .nav-link.active {
+  background-color: transparent;
+  color: var(--dark-color);
+  border-bottom-color: var(--dark-color);
+}
+
+.invoice-card {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+/* Table Invoice */
+.table-invoice td {
+  vertical-align: middle;
+}
+
+.qty-input {
+  width: 70px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.btn-remove-item {
+  color: #dc3545;
+  background: none;
+  border: none;
+  padding: 5px;
+  transition: var(--transition);
+}
+
+.btn-remove-item:hover {
+  transform: scale(1.2);
+}
+
+/* ==========================================================================
+   CSS CHO IN ẤN (PRINT)
+   ========================================================================== */
+@media print {
+  /* Ẩn các phần tử không cần thiết khi in đã được control bởi class .d-print-none của Bootstrap */
+  
+  body {
+    background-color: #fff;
+    color: #000;
+    font-size: 12pt;
+  }
+
+  .container, .container-fluid {
+    width: 100% !important;
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  main#mainPrintArea {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .invoice-card {
+    border: none;
+    box-shadow: none !important;
+  }
+
+  .card-body {
+    padding: 0 !important;
+  }
+
+  .table {
+    border-collapse: collapse !important;
+  }
+
+  .table th, .table td {
+    border: 1px solid #000 !important;
+    padding: 8px !important;
+  }
+
+  .table-light th {
+    background-color: #f2f2f2 !important;
+    -webkit-print-color-adjust: exact;
+  }
+}

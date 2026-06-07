@@ -1,0 +1,137 @@
+/* ==========================================================================
+   CSS DÀNH RIÊNG CHO TRANG DANH SÁCH XE MÁY
+   ========================================================================== */
+
+/* Toolbar */
+.filter-toolbar {
+  border: none;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.filter-toolbar .form-control, 
+.filter-toolbar .form-select,
+.filter-toolbar .input-group-text {
+  border-color: #e9ecef;
+}
+
+.filter-toolbar .form-control:focus, 
+.filter-toolbar .form-select:focus {
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.25);
+}
+
+/* Data Table */
+.table th {
+  font-weight: 600;
+  color: var(--dark-color);
+  background-color: var(--light-color);
+  border-bottom: 2px solid #dee2e6;
+  white-space: nowrap;
+}
+
+.table td {
+  vertical-align: middle;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.table tbody tr {
+  transition: var(--transition);
+}
+
+.table tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+/* Product Thumbnail in Table */
+.img-thumbnail-table {
+  width: 100px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #eee;
+}
+
+/* Badges for Status */
+.badge-status {
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.badge-instock {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.badge-outstock {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.badge-stop {
+  background-color: #eeeeee;
+  color: #616161;
+}
+
+.badge-lowstock {
+  background-color: #fff8e1;
+  color: #f57f17;
+}
+
+/* Action Buttons in Table */
+.action-btns .btn {
+  padding: 4px 8px;
+  margin: 0 2px;
+  border-radius: 4px;
+}
+
+.action-btns .btn i {
+  font-size: 0.9rem;
+}
+
+.btn-view {
+  color: #0d6efd;
+  background-color: rgba(13, 110, 253, 0.1);
+}
+.btn-view:hover { background-color: #0d6efd; color: white; }
+
+.btn-edit {
+  color: #ffc107;
+  background-color: rgba(255, 193, 7, 0.1);
+}
+.btn-edit:hover { background-color: #ffc107; color: #000; }
+
+.btn-delete {
+  color: #dc3545;
+  background-color: rgba(220, 53, 69, 0.1);
+}
+.btn-delete:hover { background-color: #dc3545; color: white; }
+
+/* Pagination Override */
+.page-link {
+  color: var(--dark-color);
+  border-color: #dee2e6;
+}
+
+.page-item.active .page-link {
+  background-color: var(--dark-color);
+  border-color: var(--dark-color);
+}
+
+.page-link:hover {
+  color: #fff;
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+/* Modal Form Preview Image */
+.preview-img-container {
+  text-align: center;
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px dashed #ced4da;
+}
