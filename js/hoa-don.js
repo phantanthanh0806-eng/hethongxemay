@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   document.getElementById('btnSaveInvoice').addEventListener('click', saveInvoice);
   document.getElementById('btnPrint').addEventListener('click', printInvoice);
+  document.getElementById('btnExportPDF').addEventListener('click', exportPDF);
 
   // Load History khi mở modal
   document.getElementById('btnShowHistory').addEventListener('click', renderHistory);
@@ -265,14 +266,17 @@ function validateForm() {
   const hasItems = cartData.length > 0;
   const btnSave = document.getElementById('btnSaveInvoice');
   const btnPrint = document.getElementById('btnPrint');
+  const btnExport = document.getElementById('btnExportPDF');
 
   // Chỉ cho lưu/in khi: Form valid, Tên và SĐT có dữ liệu, và Giỏ hàng có đồ
   if (formValid && ten && sdt && hasItems) {
     btnSave.disabled = false;
     btnPrint.disabled = false;
+    if (btnExport) btnExport.disabled = false;
   } else {
     btnSave.disabled = true;
     btnPrint.disabled = true;
+    if (btnExport) btnExport.disabled = true;
   }
 }
 
@@ -363,6 +367,91 @@ function printInvoice() {
 
   // Kích hoạt dialog in của trình duyệt
   window.print();
+}
+
+/**
+ * Xử lý chức năng Xuất PDF
+ */
+function exportPDF() {
+  if (typeof html2pdf === 'undefined') {
+    alert("Thư viện tạo PDF chưa tải xong. Vui lòng tải lại trang (F5) hoặc kiểm tra mạng!");
+    return;
+  }
+
+  // Đồng bộ data từ form sang UI bản in
+  document.getElementById('printTenKH').innerText = document.getElementById('inpTenKH').value || '...';
+  document.getElementById('printSDT').innerText = document.getElementById('inpSDT').value || '...';
+  document.getElementById('printDiaChi').innerText = document.getElementById('inpDiaChi').value || '...';
+  document.getElementById('printMaHD').innerText = "HD" + document.getElementById('inpMaHD').value;
+  
+  const ngay = document.getElementById('inpNgayLap').value;
+  if (ngay) {
+    const d = new Date(ngay);
+    document.getElementById('printNgayLap').innerText = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+  }
+
+  // Clone thẻ invoice-card để không làm thay đổi màn hình gốc
+  const element = document.querySelector('.invoice-card');
+  const clone = element.cloneNode(true);
+  
+  // 1. Dọn dẹp bản clone cho đẹp
+  const actionGrp = clone.querySelector('#actionButtonsGroup');
+  if (actionGrp) actionGrp.remove(); // Xóa nhóm nút bấm
+  
+  // Bỏ cột "Xóa" và các thành phần ẩn khi in
+  const dPrintNones = clone.querySelectorAll('.d-print-none');
+  dPrintNones.forEach(el => el.remove());
+
+  // Hiển thị các thành phần dành riêng cho in ấn
+  const dNones = clone.querySelectorAll('.d-none');
+  dNones.forEach(el => el.classList.remove('d-none'));
+
+  // Thiết lập lại style cho thẻ clone
+  clone.style.border = 'none';
+  clone.style.boxShadow = 'none';
+  clone.style.width = '800px'; 
+  clone.style.padding = '20px';
+  clone.style.backgroundColor = '#fff';
+
+  // Thêm Header thông tin cửa hàng vào đầu hóa đơn PDF
+  const headerHTML = `
+    <div style="text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #ddd; color: #000;">
+      <h2 style="margin-bottom: 5px; font-weight: bold;">MOTOSYS</h2>
+      <p style="margin:0; font-size: 14px;">123 Đường ABC, Quận XYZ, TP. Hồ Chí Minh</p>
+      <p style="margin:0; font-size: 14px;">Hotline: 1900 xxxx - Email: contact@motosys.vn</p>
+      <h3 style="margin-top: 15px; text-transform: uppercase; font-weight: bold;">Hóa Đơn Bán Hàng</h3>
+    </div>
+  `;
+  clone.insertAdjacentHTML('afterbegin', headerHTML);
+
+  // Đưa clone vào một wrapper ẩn trên body
+  const wrapper = document.createElement('div');
+  wrapper.style.position = 'absolute';
+  wrapper.style.left = '-9999px';
+  wrapper.appendChild(clone);
+  document.body.appendChild(wrapper);
+
+  const maHD = "HD" + (document.getElementById('inpMaHD').value || '000');
+  
+  const opt = {
+    margin:       10,
+    filename:     `HoaDon_${maHD}.pdf`,
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2, logging: false },
+    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+
+  showToast('Đang xử lý', 'Đang tạo file PDF, vui lòng đợi...', 'success');
+
+  // Gọi thư viện html2pdf
+  html2pdf().set(opt).from(clone).save().then(() => {
+    document.body.removeChild(wrapper);
+    showToast('Thành công', 'Đã xuất file PDF hóa đơn!', 'success');
+  }).catch(err => {
+    console.error("Lỗi xuất PDF: ", err);
+    document.body.removeChild(wrapper);
+    showToast('Lỗi', 'Có lỗi khi xuất file PDF', 'error');
+  });
 }
 
 /**
