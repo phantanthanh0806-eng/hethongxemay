@@ -25,8 +25,6 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('btnClearCart').addEventListener('click', clearAllCart);
   
   document.getElementById('btnSaveInvoice').addEventListener('click', saveInvoice);
-  document.getElementById('btnPrint').addEventListener('click', printInvoice);
-  document.getElementById('btnExportPDF').addEventListener('click', exportPDF);
 
   // Load History khi mở modal
   document.getElementById('btnShowHistory').addEventListener('click', renderHistory);
@@ -265,18 +263,12 @@ function validateForm() {
   
   const hasItems = cartData.length > 0;
   const btnSave = document.getElementById('btnSaveInvoice');
-  const btnPrint = document.getElementById('btnPrint');
-  const btnExport = document.getElementById('btnExportPDF');
 
-  // Chỉ cho lưu/in khi: Form valid, Tên và SĐT có dữ liệu, và Giỏ hàng có đồ
+  // Chỉ cho lưu khi: Form valid, Tên và SĐT có dữ liệu, và Giỏ hàng có đồ
   if (formValid && ten && sdt && hasItems) {
     btnSave.disabled = false;
-    btnPrint.disabled = false;
-    if (btnExport) btnExport.disabled = false;
   } else {
     btnSave.disabled = true;
-    btnPrint.disabled = true;
-    if (btnExport) btnExport.disabled = true;
   }
 }
 
@@ -340,7 +332,6 @@ function saveInvoice() {
   
   // Disable buttons until new data
   document.getElementById('btnSaveInvoice').disabled = true;
-  document.getElementById('btnPrint').disabled = true;
   
   // Tùy chọn: Tự động reset form
   setTimeout(() => {
@@ -350,109 +341,7 @@ function saveInvoice() {
   }, 1000);
 }
 
-/**
- * Xử lý chức năng In (Print)
- */
-function printInvoice() {
-  // Sync data từ form sang UI của bản in
-  document.getElementById('printTenKH').innerText = document.getElementById('inpTenKH').value || '...';
-  document.getElementById('printSDT').innerText = document.getElementById('inpSDT').value || '...';
-  document.getElementById('printDiaChi').innerText = document.getElementById('inpDiaChi').value || '...';
-  
-  document.getElementById('printMaHD').innerText = "HD" + document.getElementById('inpMaHD').value;
-  
-  const ngay = document.getElementById('inpNgayLap').value;
-  const d = new Date(ngay);
-  document.getElementById('printNgayLap').innerText = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
 
-  // Kích hoạt dialog in của trình duyệt
-  window.print();
-}
-
-/**
- * Xử lý chức năng Xuất PDF
- */
-function exportPDF() {
-  if (typeof html2pdf === 'undefined') {
-    alert("Thư viện tạo PDF chưa tải xong. Vui lòng tải lại trang (F5) hoặc kiểm tra mạng!");
-    return;
-  }
-
-  // Đồng bộ data từ form sang UI bản in
-  document.getElementById('printTenKH').innerText = document.getElementById('inpTenKH').value || '...';
-  document.getElementById('printSDT').innerText = document.getElementById('inpSDT').value || '...';
-  document.getElementById('printDiaChi').innerText = document.getElementById('inpDiaChi').value || '...';
-  document.getElementById('printMaHD').innerText = "HD" + document.getElementById('inpMaHD').value;
-  
-  const ngay = document.getElementById('inpNgayLap').value;
-  if (ngay) {
-    const d = new Date(ngay);
-    document.getElementById('printNgayLap').innerText = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
-  }
-
-  // Clone thẻ invoice-card để không làm thay đổi màn hình gốc
-  const element = document.querySelector('.invoice-card');
-  const clone = element.cloneNode(true);
-  
-  // 1. Dọn dẹp bản clone cho đẹp
-  const actionGrp = clone.querySelector('#actionButtonsGroup');
-  if (actionGrp) actionGrp.remove(); // Xóa nhóm nút bấm
-  
-  // Bỏ cột "Xóa" và các thành phần ẩn khi in
-  const dPrintNones = clone.querySelectorAll('.d-print-none');
-  dPrintNones.forEach(el => el.remove());
-
-  // Hiển thị các thành phần dành riêng cho in ấn
-  const dNones = clone.querySelectorAll('.d-none');
-  dNones.forEach(el => el.classList.remove('d-none'));
-
-  // Thiết lập lại style cho thẻ clone
-  clone.style.border = 'none';
-  clone.style.boxShadow = 'none';
-  clone.style.width = '800px'; 
-  clone.style.padding = '20px';
-  clone.style.backgroundColor = '#fff';
-
-  // Thêm Header thông tin cửa hàng vào đầu hóa đơn PDF
-  const headerHTML = `
-    <div style="text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #ddd; color: #000;">
-      <h2 style="margin-bottom: 5px; font-weight: bold;">MOTOSYS</h2>
-      <p style="margin:0; font-size: 14px;">123 Đường ABC, Quận XYZ, TP. Hồ Chí Minh</p>
-      <p style="margin:0; font-size: 14px;">Hotline: 1900 xxxx - Email: contact@motosys.vn</p>
-      <h3 style="margin-top: 15px; text-transform: uppercase; font-weight: bold;">Hóa Đơn Bán Hàng</h3>
-    </div>
-  `;
-  clone.insertAdjacentHTML('afterbegin', headerHTML);
-
-  // Đưa clone vào một wrapper ẩn trên body
-  const wrapper = document.createElement('div');
-  wrapper.style.position = 'absolute';
-  wrapper.style.left = '-9999px';
-  wrapper.appendChild(clone);
-  document.body.appendChild(wrapper);
-
-  const maHD = "HD" + (document.getElementById('inpMaHD').value || '000');
-  
-  const opt = {
-    margin:       10,
-    filename:     `HoaDon_${maHD}.pdf`,
-    image:        { type: 'jpeg', quality: 0.98 },
-    html2canvas:  { scale: 2, logging: false },
-    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-  };
-
-  showToast('Đang xử lý', 'Đang tạo file PDF, vui lòng đợi...', 'success');
-
-  // Gọi thư viện html2pdf
-  html2pdf().set(opt).from(clone).save().then(() => {
-    document.body.removeChild(wrapper);
-    showToast('Thành công', 'Đã xuất file PDF hóa đơn!', 'success');
-  }).catch(err => {
-    console.error("Lỗi xuất PDF: ", err);
-    document.body.removeChild(wrapper);
-    showToast('Lỗi', 'Có lỗi khi xuất file PDF', 'error');
-  });
-}
 
 /**
  * Hiển thị Lịch sử Hóa Đơn trong Modal
@@ -480,12 +369,190 @@ function renderHistory() {
       <td>${hd.khachHang.sdt}</td>
       <td class="text-end fw-bold text-danger">${formatCurrency(hd.thanhTien)}</td>
       <td>
-        <button class="btn btn-sm btn-outline-info" title="Xem sơ lược" onclick="alert('Các mặt hàng:\\n${itemNames}')">
-          <i class="fa-solid fa-eye"></i>
-        </button>
+        <div class="d-flex justify-content-center gap-1">
+          <button class="btn btn-sm btn-outline-info" title="Xem sơ lược" onclick="alert('Các mặt hàng:\\n${itemNames}')">
+            <i class="fa-solid fa-eye"></i>
+          </button>
+          <button class="btn btn-sm btn-outline-secondary" title="In Hóa Đơn" onclick="printHistoryInvoice('${hd.maHD}')">
+            <i class="fa-solid fa-print"></i>
+          </button>
+          <button class="btn btn-sm btn-outline-danger" title="Xuất PDF" onclick="exportHistoryInvoicePDF('${hd.maHD}')">
+            <i class="fa-solid fa-file-pdf"></i>
+          </button>
+        </div>
       </td>
     `;
     tbody.appendChild(tr);
+  });
+}
+
+/**
+ * Xây dựng giao diện Hóa Đơn ảo để In hoặc Xuất PDF
+ */
+function buildHistoryInvoiceDOM(hd) {
+  const wrapper = document.createElement('div');
+  wrapper.style.width = '800px';
+  wrapper.style.padding = '20px';
+  wrapper.style.backgroundColor = '#fff';
+  wrapper.style.color = '#000';
+  wrapper.style.fontFamily = 'Arial, sans-serif';
+
+  const d = new Date(hd.ngayLap);
+  const ngayStr = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+
+  let itemsHTML = '';
+  hd.items.forEach((item, index) => {
+    const badgeType = item.type === 'xe' ? 'Xe' : 'PT';
+    itemsHTML += `
+      <tr>
+        <td style="text-align:center; border:1px solid #ddd; padding:8px;">${index + 1}</td>
+        <td style="border:1px solid #ddd; padding:8px;">
+          <strong>${item.ten}</strong> <span style="font-size:12px; color:#666;">(${badgeType})</span>
+        </td>
+        <td style="text-align:right; border:1px solid #ddd; padding:8px;">${formatCurrency(item.gia)}</td>
+        <td style="text-align:center; border:1px solid #ddd; padding:8px;">${item.soLuong}</td>
+        <td style="text-align:right; border:1px solid #ddd; padding:8px; font-weight:bold;">${formatCurrency(item.gia * item.soLuong)}</td>
+      </tr>
+    `;
+  });
+
+  wrapper.innerHTML = `
+    <div style="text-align: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #ddd; color: #000;">
+      <h2 style="margin-bottom: 5px; font-weight: bold;">MOTOSYS</h2>
+      <p style="margin:0; font-size: 14px;">123 Đường ABC, Quận XYZ, TP. Hồ Chí Minh</p>
+      <p style="margin:0; font-size: 14px;">Hotline: 1900 xxxx - Email: contact@motosys.vn</p>
+      <h3 style="margin-top: 15px; text-transform: uppercase; font-weight: bold;">Hóa Đơn Bán Hàng</h3>
+    </div>
+    
+    <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+      <div>
+        <p style="margin: 0 0 5px 0;"><strong>Khách hàng:</strong> ${hd.khachHang.ten}</p>
+        <p style="margin: 0 0 5px 0;"><strong>SĐT:</strong> ${hd.khachHang.sdt}</p>
+        <p style="margin: 0;"><strong>Địa chỉ:</strong> ${hd.khachHang.diaChi || '...'}</p>
+      </div>
+      <div style="text-align: right;">
+        <p style="margin: 0 0 5px 0;"><strong>Số HĐ:</strong> ${hd.maHD}</p>
+        <p style="margin: 0;"><strong>Ngày lập:</strong> ${ngayStr}</p>
+      </div>
+    </div>
+
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+      <thead style="background-color: #f8f9fa;">
+        <tr>
+          <th style="border: 1px solid #ddd; padding: 10px; text-align: center; width: 50px;">STT</th>
+          <th style="border: 1px solid #ddd; padding: 10px; text-align: left;">Tên Sản Phẩm</th>
+          <th style="border: 1px solid #ddd; padding: 10px; text-align: right; width: 120px;">Đơn Giá</th>
+          <th style="border: 1px solid #ddd; padding: 10px; text-align: center; width: 80px;">SL</th>
+          <th style="border: 1px solid #ddd; padding: 10px; text-align: right; width: 120px;">Thành Tiền</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${itemsHTML}
+      </tbody>
+    </table>
+
+    <div style="display: flex; justify-content: flex-end; margin-bottom: 40px;">
+      <div style="width: 300px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+          <span>Cộng tiền hàng:</span>
+          <strong>${formatCurrency(hd.tamTinh)}</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+          <span>Chiết khấu (%):</span>
+          <strong>${hd.chietKhau || 0}%</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 5px; color: red;">
+          <span>Giảm giá:</span>
+          <strong>- ${formatCurrency(hd.giamGia)}</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+          <span>Thuế VAT (10%):</span>
+          <strong>${formatCurrency(hd.vat)}</strong>
+        </div>
+        <hr style="margin: 10px 0;">
+        <div style="display: flex; justify-content: space-between; font-size: 18px;">
+          <span style="font-weight: bold; text-transform: uppercase;">Tổng Cộng:</span>
+          <strong style="color: #0d6efd;">${formatCurrency(hd.thanhTien)}</strong>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; text-align: center; margin-top: 50px;">
+      <div style="flex: 1;">
+        <strong>Người mua hàng</strong>
+        <p style="font-size: 12px; color: #666; margin-top: 5px;">(Ký, ghi rõ họ tên)</p>
+      </div>
+      <div style="flex: 1;">
+        <strong>Người bán hàng</strong>
+        <p style="font-size: 12px; color: #666; margin-top: 5px;">(Ký, ghi rõ họ tên)</p>
+      </div>
+    </div>
+  `;
+  return wrapper;
+}
+
+/**
+ * In Hóa Đơn Cũ
+ */
+function printHistoryInvoice(maHD) {
+  const dsHoaDon = getHoaDon();
+  const hd = dsHoaDon.find(x => x.maHD === maHD);
+  if(!hd) return;
+
+  const invoiceDOM = buildHistoryInvoiceDOM(hd);
+  
+  // Mở cửa sổ mới ẩn để in
+  const printWindow = window.open('', '_blank', 'width=800,height=600');
+  printWindow.document.write('<html><head><title>In Hóa Đơn ' + hd.maHD + '</title></head><body style="margin:0; padding:0;">');
+  printWindow.document.write(invoiceDOM.innerHTML);
+  printWindow.document.write('</body></html>');
+  printWindow.document.close();
+  printWindow.focus();
+  
+  setTimeout(() => {
+    printWindow.print();
+    printWindow.close();
+  }, 250);
+}
+
+/**
+ * Xuất PDF Hóa Đơn Cũ
+ */
+function exportHistoryInvoicePDF(maHD) {
+  if (typeof html2pdf === 'undefined') {
+    alert("Thư viện tạo PDF chưa tải xong. Vui lòng tải lại trang (F5)!");
+    return;
+  }
+
+  const dsHoaDon = getHoaDon();
+  const hd = dsHoaDon.find(x => x.maHD === maHD);
+  if(!hd) return;
+
+  const invoiceDOM = buildHistoryInvoiceDOM(hd);
+  
+  const wrapper = document.createElement('div');
+  wrapper.style.position = 'absolute';
+  wrapper.style.left = '-9999px';
+  wrapper.appendChild(invoiceDOM);
+  document.body.appendChild(wrapper);
+
+  const opt = {
+    margin:       10,
+    filename:     `HoaDon_${hd.maHD}.pdf`,
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2, logging: false },
+    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  };
+
+  showToast('Đang xử lý', 'Đang tạo file PDF, vui lòng đợi...', 'success');
+
+  html2pdf().set(opt).from(invoiceDOM).save().then(() => {
+    document.body.removeChild(wrapper);
+    showToast('Thành công', 'Đã xuất file PDF hóa đơn cũ!', 'success');
+  }).catch(err => {
+    console.error("Lỗi xuất PDF cũ: ", err);
+    document.body.removeChild(wrapper);
+    showToast('Lỗi', 'Có lỗi khi xuất file PDF', 'error');
   });
 }
 
